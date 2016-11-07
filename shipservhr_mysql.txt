@@ -1,0 +1,56 @@
+mysqld --initialize-insecure
+
+mysqladmin -u root password root
+
+
+create database shipservhr;
+
+create user 'shipservhr'@'localhost' identified by 'shipservhr';
+
+grant select,insert,update,delete on shipservhr.* to 'shipservhr'@'localhost';
+
+
+CREATE TABLE `employees` (
+  
+	`id` int(10) AUTO_INCREMENT NOT NULL,
+  
+	`name` varchar(128) NOT NULL,
+  
+	`address` varchar(255) DEFAULT NULL,
+ 
+ 	`contactNumber` varchar(36) DEFAULT NULL,
+  
+	`status` varchar(24) NOT NULL DEFAULT 'ACTIVE',
+  
+	PRIMARY KEY (`id`)
+);
+
+
+
+alter table employees auto_increment=1;
+
+
+
+drop table users;
+ 
+
+
+CREATE TABLE `users` (
+  
+	`id` int(11) NOT NULL,
+  
+	`userName` varchar(45) NOT NULL,
+  
+	`password` varchar(255) NOT NULL,
+  
+	`fullName` varchar(45) NOT NULL,
+  
+	`roles` varchar(255) NOT NULL DEFAULT 'ROLE_USER',
+  
+	PRIMARY KEY (`id`)
+);
+  
+INSERT INTO `shipservhr`.`employees` (`id`, `name`, `address`, `contact_number`) VALUES ('1', 'John Dela Cruz', '', 'makati', '+639998887766');
+
+
+INSERT INTO `shipservhr`.`users` (`id`, `userName`, `password`, `fullName`, `roles`) VALUES ('1', 'test','$2a$10$wlQmaM33P4Sxg2kqYIfP2euDGZ.TXP.upnHVsVEmxBQ7c/nyyTbIy', 'Administrator', 'ROLE_ADMIN|ROLE_USER');
