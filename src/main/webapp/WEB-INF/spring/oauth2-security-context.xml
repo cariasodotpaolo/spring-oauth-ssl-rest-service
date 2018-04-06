@@ -23,7 +23,7 @@
 		<sec:custom-filter ref="clientCredentialsTokenEndpointFilter"
 			before="BASIC_AUTH_FILTER" />
 		<sec:access-denied-handler ref="oauthAccessDeniedHandler" />
-	</sec:http>	
+	</sec:http>
 
 	<!-- FOR SSL: SEE SECURITY CONSTRAINT ON WEB.XML -->
 	<sec:http pattern="/protected/**" create-session="never"
@@ -35,7 +35,7 @@
 			before="PRE_AUTH_FILTER" />
 		<sec:access-denied-handler ref="oauthAccessDeniedHandler" />
 	</sec:http>
-	
+
 	<!-- NON-SSL -->
 	<sec:http pattern="/**" create-session="never"
 		entry-point-ref="oauthAuthenticationEntryPoint">
@@ -70,7 +70,7 @@
 		<sec:authentication-provider
 			user-service-ref="clientDetailsUserService">
 				<sec:password-encoder ref="bCryptPasswordEncoder" />
-			</sec:authentication-provider>		
+			</sec:authentication-provider>
 	</sec:authentication-manager>
 
 	<bean id="clientDetailsUserService"
@@ -78,11 +78,11 @@
 		<constructor-arg ref="clientDetails" />
 	</bean>
 
-	<bean id="clientDetails" class="com.shipserv.hr.security.oauth.ClientDetailsServiceImpl">
+	<bean id="clientDetails" class="mp.cariaso.hr.security.oauth.ClientDetailsServiceImpl">
 		<property name="id" value="test01-id" />
 		<!-- <property name="secretKey" value="test01-secretkey" /> -->
-		<property name="secretKey" value="$2a$10$FcYo.3u0/iojxK77HIquuOJljNY2b2341hmvyY8zQH5Ct/9R6ZjPO" />				
-	</bean>	
+		<property name="secretKey" value="$2a$10$FcYo.3u0/iojxK77HIquuOJljNY2b2341hmvyY8zQH5Ct/9R6ZjPO" />
+	</bean>
 
 	<oauth:authorization-server
 		client-details-service-ref="clientDetails" token-services-ref="tokenServices">
@@ -99,7 +99,7 @@
 	<bean id="tokenStore"
 		class="org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore" />
 
-	
+
 	<bean id="tokenServices"
 		class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
 		<property name="tokenStore" ref="tokenStore" />
@@ -107,19 +107,19 @@
 		<property name="accessTokenValiditySeconds" value="1800" />
 		<property name="clientDetailsService" ref="clientDetails" />
 	</bean>
-	
+
 	<sec:authentication-manager id="userAuthenticationManager">
 		<sec:authentication-provider  ref="userAuthenticationProvider">
 		</sec:authentication-provider>
 	</sec:authentication-manager>
 
-	<bean id="userAuthenticationProvider" class="com.shipserv.hr.security.oauth.UserAuthenticationProvider"> 
-		<property name="userDetailsService" ref="userDetailsService" /> 
-		<property name="passwordEncoder" ref="bCryptPasswordEncoder" /> 
+	<bean id="userAuthenticationProvider" class="mp.cariaso.hr.security.oauth.UserAuthenticationProvider">
+		<property name="userDetailsService" ref="userDetailsService" />
+		<property name="passwordEncoder" ref="bCryptPasswordEncoder" />
 	</bean>
-	
-	<bean id="userDetailsService" class="com.shipserv.hr.security.oauth.UserDetailsServiceImpl"/>
 
-	<bean id='bCryptPasswordEncoder' class='org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder'/>	
-	
+	<bean id="userDetailsService" class="mp.cariaso.hr.security.oauth.UserDetailsServiceImpl"/>
+
+	<bean id='bCryptPasswordEncoder' class='org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder'/>
+
 </beans>

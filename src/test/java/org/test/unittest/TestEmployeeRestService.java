@@ -9,13 +9,13 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.jayway.restassured.response.ValidatableResponse;
-import com.shipserv.hr.domain.Employee;
+import mp.cariaso.hr.domain.Employee;
 
 public class TestEmployeeRestService {
-	
+
 	@Test
 	public void testListEmployees() {
-		
+
 		/*
 		 * /oauth/token?username=myuser&password=mypassword
 		 *	&client_id=mysupplycompany&client_secret=mycompanykey&grant_type=password
@@ -27,7 +27,7 @@ public class TestEmployeeRestService {
 			formParam("username", "test").
 			formParam("password", "test").
 			formParam("client_id", "test01-id").
-			formParam("client_secret", "test01-secretkey").		
+			formParam("client_secret", "test01-secretkey").
 			formParam("grant_type", "password").
 			formParam("scope", "read").
 			baseUri("http://localhost").
@@ -36,21 +36,21 @@ public class TestEmployeeRestService {
 			log().all(). //logs the request
 		/*.expect().statusCode(200)*/
 		/*.auth().basic("test", "test").*/
-					
+
 		when().
 			/*.log().body().*/
 			//post("https://localhost:8443/test01/oauth/token").
 			post("/hr-service/oauth/token").
 		then().
 			log().all(); //logs the response
-		
-		
+
+
 		String accessToken = loginResponse.extract().body().jsonPath().get("access_token");
-		
+
 		System.out.println("access_token: " + accessToken);
-		
+
 		ValidatableResponse listResponse =
-				
+
 		given().
 			keystore("D:\\apache-tomcat-8.0.30\\conf\\tomcat.jks", "tomcat").
 			formParam("status", "ACTIVE").
@@ -59,32 +59,32 @@ public class TestEmployeeRestService {
 			baseUri("https://localhost"). //for SSL request
 			port(8443). //for SSL request
 			log().all().
-		when().			
+		when().
 			get("/hr-service/protected/employee/list").
-		
+
 		then().
 			log().all();
-		
+
 		System.out.println(listResponse.extract().asString());
-		
+
 		//List<Employee> employees = listResponse.extract().body().jsonPath().getList(".employees", Employee.class);
 		//Map employees = response.extract().body().jsonPath().getList(".", Employee.class);
 		//List<String> employeeNames = response.extract().body().jsonPath().getList(".", String.class);
 		List<Employee> employees = Arrays.asList(listResponse.extract().body().as(Employee[].class));
-		
+
 		//System.out.println(employees.size());
 		//Arrays.asList(response.getBody().as(Artwork[].class));
-		
+
 		for(Employee e: employees) {
 			System.out.println("Employee Name: " + e.getName());
 		}
-		
-		
+
+
 	}
-	
+
 	@Test
 	public void testAddEmployee() {
-		
+
 		/*
 		 * /oauth/token?username=myuser&password=mypassword
 		 *	&client_id=mysupplycompany&client_secret=mycompanykey&grant_type=password
@@ -96,7 +96,7 @@ public class TestEmployeeRestService {
 			formParam("username", "test").
 			formParam("password", "test").
 			formParam("client_id", "test01-id").
-			formParam("client_secret", "test01-secretkey").		
+			formParam("client_secret", "test01-secretkey").
 			formParam("grant_type", "password").
 			formParam("scope", "read").
 			baseUri("http://localhost").
@@ -105,19 +105,19 @@ public class TestEmployeeRestService {
 			log().all(). //logs the request
 		/*.expect().statusCode(200)*/
 		/*.auth().basic("test", "test").*/
-					
+
 		when().
 			/*.log().body().*/
 			//post("https://localhost:8443/test01/oauth/token").
 			post("/hr-service/oauth/token").
 		then().
 			log().all(); //logs the response
-		
-		
+
+
 		String accessToken = response.extract().body().jsonPath().get("access_token");
-		
+
 		System.out.println("access_token: " + accessToken);
-				
+
 		given().
 			keystore("D:\\apache-tomcat-8.0.30\\conf\\tomcat.jks", "tomcat").
 			formParam("name", "arya").
@@ -131,14 +131,14 @@ public class TestEmployeeRestService {
 		when().
 			//get("http://localhost:8080/test01/protected/messaging/{name}").
 			post("/hr-service/protected/employee/add").
-		
+
 		then().
 			log().all();
 	}
-	
+
 	@Test
 	public void testUpdateEmployee() {
-		
+
 		/*
 		 * /oauth/token?username=myuser&password=mypassword
 		 *	&client_id=mysupplycompany&client_secret=mycompanykey&grant_type=password
@@ -150,23 +150,23 @@ public class TestEmployeeRestService {
 			formParam("username", "test").
 			formParam("password", "test").
 			formParam("client_id", "test01-id").
-			formParam("client_secret", "test01-secretkey").		
+			formParam("client_secret", "test01-secretkey").
 			formParam("grant_type", "password").
 			formParam("scope", "read").
 			baseUri("http://localhost").
 			port(8080).
 			log().all(). //logs the request
-					
-		when().			
+
+		when().
 			post("/hr-service/oauth/token").
 		then().
 			log().all(); //logs the response
-		
-		
+
+
 		String accessToken = response.extract().body().jsonPath().get("access_token");
-		
+
 		System.out.println("access_token: " + accessToken);
-				
+
 		given().
 			keystore("D:\\apache-tomcat-8.0.30\\conf\\tomcat.jks", "tomcat").
 			formParam("id", "2").
@@ -180,14 +180,14 @@ public class TestEmployeeRestService {
 			port(8443). //for SSL request
 			log().all().
 		when().
-			post("/hr-service/protected/employee/update").		
+			post("/hr-service/protected/employee/update").
 		then().
 			log().all();
 	}
-	
+
 	@Ignore
 	public void testOauthTokenSSL() {
-		
+
 		/*
 		 * /oauth/token?username=myuser&password=mypassword
 		 *	&client_id=mysupplycompany&client_secret=mycompanykey&grant_type=password
@@ -199,28 +199,28 @@ public class TestEmployeeRestService {
 			formParam("username", "test").
 			formParam("password", "test").
 			formParam("client_id", "test01-id").
-			formParam("client_secret", "test01-secretkey").		
+			formParam("client_secret", "test01-secretkey").
 			formParam("grant_type", "password").
-			formParam("scope", "read").			
+			formParam("scope", "read").
 			baseUri("https://localhost"). //for SSL request
 			port(8443). //for SSL request
 			/*header("Accept","application/vnd.eops.eserve+json").*/
 			log().all(). //logs the request
 		/*.expect().statusCode(200)*/
 		/*.auth().basic("test", "test").*/
-					
+
 		when().
 			/*.log().body().*/
-			//post("https://localhost:8443/test01/oauth/token").		
+			//post("https://localhost:8443/test01/oauth/token").
 			post("/rest-oauth2/oauth/token").
 		then().
 			log().all(); //logs the response
-		
-		
+
+
 		String accessToken = response.extract().body().jsonPath().get("access_token");
-		
+
 		//System.out.println("access_token: " + accessToken);
-		
+
 		given().
 			//keystore("C:\\dev_apps\\wildfly-8.2.1.Final\\standalone\\configuration\\testkeystore.jks", "secret").
 			keystore("/Applications/apache-tomcat-8.0.23/conf/tomcat.jks", "tomcat").
@@ -233,7 +233,7 @@ public class TestEmployeeRestService {
 		when().
 			//get("https://localhost:8443/test01/protected/messaging/{name}").
 			get("/rest-oauth2/protected/messaging/{name}").
-		
+
 		then().
 			log().all();
 	}
